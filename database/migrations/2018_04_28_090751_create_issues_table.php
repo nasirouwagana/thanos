@@ -23,6 +23,7 @@ class CreateIssuesTable extends Migration
             $table->string('submitter_email', 100)->nullable();
             $table->string('submitter_ip', 15)->nullable();
             $table->string('address', 255)->nullable();
+
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
