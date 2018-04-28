@@ -36,6 +36,7 @@ class IssueController extends Controller
      */
     public function store(IssueRequest $request)
     {
+
         Issue::create($request->all());
 
         return back()->with('success', 'Enregistrement effectuee avec succes');

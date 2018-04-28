@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Issue extends Model
 {
@@ -15,4 +16,13 @@ class Issue extends Model
         'address',
         'image',
     ];
+
+    public function setImageAttribute($image)
+    {
+        if ($image instanceof UploadedFile && $image->isValid()) {
+            $imageName = date('YmdHis') . '_' . str_slug($this->title);
+            $image->storeAs('issues', $imageName);
+            $this->attributes['image'] = $imageName;
+        }
+    }
 }

@@ -28,6 +28,14 @@ class IssueRequest extends FormRequest
             'description' => 'required',
             'submitter_email' => 'required|email',
             'submitter_telephone' => 'required',
+            'image' => 'max:6000|image|mimetypes:image/jpeg,image/png|nullable',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required' => 'Le titre est obligatoire',
         ];
     }
 }
