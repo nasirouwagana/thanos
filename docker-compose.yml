@@ -1,0 +1,49 @@
+version: "3.1"
+
+services:
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - '9000:80'
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - .:/var/www/html
+    networks:
+      - thanos
+
+  php:
+    build: ./docker/php
+    restart: always
+    volumes:
+      - .:/var/www/html
+    command: php-fpm --allow-to-run-as-root
+    privileged: true
+    networks:
+      - thanos
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=thanos"
+      - "MYSQL_USER=thanos"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=secret"
+    ports:
+      - "13306:3306"
+    networks:
+      - thanos
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "16379:6379"
+    networks:
+      - thanos
+
+networks:
+  thanos:
